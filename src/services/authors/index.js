@@ -7,9 +7,7 @@ import uniqid from "uniqid"
 
 
 const currentFilePath = fileURLToPath(import.meta.url)
-
 const parentFolderPath = dirname(currentFilePath)
-
 const authorsJSONPath = join(parentFolderPath, "authors.json")
 
 
@@ -17,16 +15,16 @@ const authorsRouter = express.Router()
 authorsRouter.post("/", (req, res) => {
   console.log("REQUEST BODY: ", req.body)
 
-  const newUser = { ...req.body, createdAt: new Date(), id: uniqid() }
-  console.log(newUser)
+  const newAuthors = { ...req.body, createdAt: new Date(), id: uniqid() }
+  console.log(newAuthors)
 
   const authorsArray = JSON.parse(fs.readFileSync(authorsJSONPath))
 
-  authorsArray.push(newUser)
+  authorsArray.push(newAuthors)
 
   fs.writeFileSync(authorsJSONPath, JSON.stringify(authorsArray))
 
-  res.status(201).send({ id: newUser.id })
+  res.status(201).send({ id: newAuthors.id })
 })
 
 authorsRouter.get("/", (req, res) => {
