@@ -30,44 +30,41 @@ authorsRouter.post("/", (req, res) => {
 })
 
 authorsRouter.get("/", (req, res) => {
-  // // 1. Read the content of authors.json file
-  console.log("FILE CONTENT: ", JSON.parse(fileContent))
 
+  console.log("FILE CONTENT: ", JSON.parse(fileContent))
 
   res.send(authorsArray)
 })
 
-// 3.
-authorsRouter.get("/:userId", (req, res) => {
-  console.log("ID: ", req.params.userId)
+authorsRouter.get("/:authorId", (req, res) => {
+  console.log("ID: ", req.params.authorId)
 
   const authorsArray = JSON.parse(fs.readFileSync(authorsJSONPath))
 
-  const foundUser = authorsArray.find(user => user.id === req.params.userId)
+  const foundAuthor = authorsArray.find(author => author.id === req.params.authorId)
 
-
-  res.send(foundUser)
+  res.send(foundAuthor)
 })
 
 // 4.
-authorsRouter.put("/:userId", (req, res) => {
+authorsRouter.put("/:authorId", (req, res) => {
   const authorsArray = JSON.parse(fs.readFileSync(authorsJSONPath))
 
-  const index = authorsArray.findIndex(user => user.id === req.params.userId)
-  const oldUser = authorsArray[index]
-  const updatedUser = { ...oldUser, ...req.body, updatedAt: new Date() }
-  authorsArray[index] = updatedUser
+  const index = authorsArray.findIndex(author => author.id === req.params.authorId)
+  const oldAuthor = authorsArray[index]
+  const updatedAuthor = { ...oldAuthor, ...req.body, updatedAt: new Date() }
+  authorsArray[index] = updatedAuthor
 
   fs.writeFileSync(authorsJSONPath, JSON.stringify(authorsArray))
 
-  res.send(updatedUser)
+  res.send(updatedAuthor)
 })
 
-authorsRouter.delete("/:userId", (req, res) => {
+authorsRouter.delete("/:authorId", (req, res) => {
   const authorsArray = JSON.parse(fs.readFileSync(authorsJSONPath))
 
  
-  const remainingauthors = authorsArray.filter(user => user.id !== req.params.userId) 
+  const remainingauthors = authorsArray.filter(author => author.id !== req.params.authorId) 
 
   fs.writeFileSync(authorsJSONPath, JSON.stringify(remainingauthors))
 
